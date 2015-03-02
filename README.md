@@ -27,6 +27,10 @@ Clone repo using git
 git clone https://github.com/marcelinhov2/angular-kickoff.git
 cd angular-kickoff
 ```
+Install some packages
+```sh
+npm install -g ionic cordova bower ios-sim
+```
 Erase remote
 ```sh
 make remove_remote
