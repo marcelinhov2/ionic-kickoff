@@ -177,4 +177,3 @@ ionic-kickoff
 
 ##TODO's
 * Prerender.io
-* Tests
