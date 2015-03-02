@@ -1,0 +1,146 @@
+/*
+To customize the look and feel of Ionic, you can override the variables
+in ionic's _variables.scss file.
+
+For example, you might change some of the default colors:
+
+$light:                           #fff !default;
+$stable:                          #f8f8f8 !default;
+$positive:                        #4a87ee !default;
+$calm:                            #43cee6 !default;
+$balanced:                        #66cc33 !default;
+$energized:                       #f0b840 !default;
+$assertive:                       #ef4e3a !default;
+$royal:                           #8a6de9 !default;
+$dark:                            #444 !default;
+*/
+
+// The path for our ionicons font files, relative to the built CSS in www/css
+$ionicons-font-path: "../bower_components/ionic/fonts" !default;
+
+// Include all of Ionic
+@import "../../bower_components/ionic/scss/ionic";
+
+div {
+  color: red;
+}
+
+
+.barList {
+  list-style: none;
+  padding: 0;
+
+  li {
+    margin-bottom: 0;
+    overflow: hidden;
+    color:black;
+  }
+
+  li{
+    &:nth-child(9n+1){
+      a{
+        > span{
+          background:#39c;  
+        }
+      }
+    }
+
+    &:nth-child(9n+2){
+      a{
+        > span{
+          background:#5933cc;  
+        }
+      }
+    }
+
+    &:nth-child(9n+3){
+      a{
+        > span{
+          background:#d65cd6;  
+        }
+      }
+    }
+
+    &:nth-child(9n+4){
+      a{
+        > span{
+          background:#c3c;  
+        }
+      }
+    }
+
+    &:nth-child(9n+5){
+      a{
+        > span{
+          background:#bdadeb; 
+        }
+      }
+    }
+
+    &:nth-child(9n+6){
+      a{
+        > span{
+          background:#5cd699; 
+        }
+      }
+    }
+
+    &:nth-child(9n+7){
+      a{
+        > span{
+          background:#7f33cc; 
+        }
+      }
+    }
+
+    &:nth-child(9n+8){
+      a{
+        > span{
+          background:#a6cc33; 
+        }
+      }
+    }
+
+    &:nth-child(9n+9){
+      a{
+        > span{
+          background:#cc3380; 
+        }
+      }
+    }
+  }
+
+  a {
+    background-color: #eee;
+    border: 1px solid transparent;
+    display: table;
+    width: 100%;
+    position: relative;
+    border-radius: 4px;
+    overflow: hidden;
+    text-decoration: none;
+    margin-top: 1%;
+
+    &:hover {
+      border: 1px solid #000;
+    }
+    &.clickable {
+      cursor: pointer;
+    }
+    span {
+      display: table-cell;
+      margin-right: 1%;
+      border-top-right-radius: 4px;
+      border-bottom-right-radius: 4px;
+    }
+
+    .value {
+      min-width: 50px;
+      padding: 0 2%;
+      display: table-cell;
+      font-style: normal;
+      color: #000;
+    }
+
+  }
+}

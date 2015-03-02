@@ -1,0 +1,37 @@
+{
+  "name": "angular-kickoff",
+  "scripts": {
+    "preinstall": "npm link ./cli/",
+    "postinstall": "bower install"
+  },
+  "dependencies": {
+    "bower": "latest",
+    "coffee-script": "latest",
+    "jade": "latest",
+    "stylus": "latest",
+    "sass": "latest",
+    
+    "gulp": "latest",
+    "open": "latest",
+    "event-stream": "latest",
+    "gulp-jade": "latest",
+    "gulp-coffee": "latest",
+    "gulp-stylus": "latest",
+    "gulp-sass": "latest",
+    "gulp-concat": "latest",
+    "gulp-uglify": "latest",
+    "gulp-inject": "latest",
+    "gulp-connect": "latest",
+    "gulp-imagemin": "latest",
+    "main-bower-files": "latest",
+    "rimraf": "latest",
+    "gulp-ng-classify": "latest",
+    "gulp-rename": "latest",
+    "gulp-angular-templatecache": "latest"
+  },
+  "devDependencies": {
+    "karma": "latest",
+    "karma-jasmine": "latest",
+    "angular-kickoff-cli": "latest"
+  }
+}
