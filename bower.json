@@ -14,6 +14,7 @@
     
   },
   "dependencies": {
+    "cordova": "latest",
     "ionic": "driftyco/ionic-bower#1.0.0-beta.14",
     "ngCordova": "latest",
     "angular-local-storage": "latest",

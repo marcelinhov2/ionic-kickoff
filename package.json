@@ -1,5 +1,5 @@
 {
-  "name": "angular-kickoff",
+  "name": "ionic-kickoff",
   "scripts": {
     "preinstall": "npm link ./cli/",
     "postinstall": "bower install"
@@ -7,31 +7,40 @@
   "dependencies": {
     "bower": "latest",
     "coffee-script": "latest",
-    "jade": "latest",
-    "stylus": "latest",
-    "sass": "latest",
-    
-    "gulp": "latest",
-    "open": "latest",
     "event-stream": "latest",
-    "gulp-jade": "latest",
+    "gulp": "latest",
+    "main-bower-files": "latest",
+    "gulp-add-src": "latest",
+    "gulp-clean": "latest",
     "gulp-coffee": "latest",
-    "gulp-stylus": "latest",
-    "gulp-sass": "latest",
     "gulp-concat": "latest",
-    "gulp-uglify": "latest",
-    "gulp-inject": "latest",
     "gulp-connect": "latest",
     "gulp-imagemin": "latest",
-    "main-bower-files": "latest",
-    "rimraf": "latest",
-    "gulp-ng-classify": "latest",
+    "gulp-inject": "latest",
+    "gulp-jade": "latest",
+    "gulp-ngmin": "latest",
+    "gulp-sourcemaps": "latest",
+    "gulp-stylus": "latest",
+    "gulp-sass": "latest",
     "gulp-rename": "latest",
-    "gulp-angular-templatecache": "latest"
+    "gulp-angular-templatecache": "latest",
+    "gulp-uglify": "latest",
+    "gulp-usemin": "latest",
+    "gulp-ng-classify": "latest",
+    "gulp-util": "latest",
+    "run-sequence": "latest",
+    "rimraf": "latest",
+    "gulp-rimraf": "latest",
+    "jade": "latest",
+    "open": "latest",
+    "stylus": "latest"
   },
   "devDependencies": {
     "karma": "latest",
     "karma-jasmine": "latest",
     "angular-kickoff-cli": "latest"
-  }
+  },
+  "cordovaPlugins": [
+    "org.apache.cordova.splashscreen"
+  ]
 }
