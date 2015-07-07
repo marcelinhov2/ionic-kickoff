@@ -1,5 +1,6 @@
 gulp          = require 'gulp'
 argv          = require('yargs').argv
+cache         = require 'gulp-cached'
 gulpif        = require 'gulp-if'
 open          = require 'open'
 es            = require 'event-stream'
@@ -17,16 +18,16 @@ rename        = require "gulp-rename"
 templateCache = require 'gulp-angular-templatecache'
 runSequence   = require 'run-sequence'
 preprocess    = require 'gulp-preprocess'
+rev           = require 'gulp-rev'
 
 paths =
-  index:      'src/index.html'
-  fonts:      'src/fonts/**/*'
-  swf:        'src/swf/**/*'
-  images:     'src/images/**/*'
-  styles:     'src/styles/**/*.scss'
-  base_style: 'src/styles/ionic.app.scss'
-  scripts:    'src/scripts/**/*.coffee'
-  partials:   'src/partials/**/*.html'
+  base:     'src/'
+  index:    'src/index.html'
+  fonts:    'src/fonts/**/*'
+  images:   'src/images/**/*'
+  styles:   'src/styles/**/*.scss'
+  scripts:  'src/scripts/**/*.coffee'
+  partials: 'src/partials/**/*.html'
 
 folder = if (argv.compress) then 'dist' else 'www'
 env = if (argv.compress) then 'production' else 'testing'
@@ -34,10 +35,6 @@ env = if (argv.compress) then 'production' else 'testing'
 gulp.task "clean", (cb) ->
   rimraf.sync "./#{folder}"
   cb null
-
-gulp.task 'move_bower', ->
-  gulp.src './bower_components/**/*'
-    .pipe gulp.dest "#{folder}/bower_components"
 
 gulp.task "concat_bower", ->
   gulp.src bowerFiles({
@@ -48,54 +45,57 @@ gulp.task "concat_bower", ->
     })
     .pipe(concat( 'dependencies.js') )
     .pipe gulpif(argv.compress, uglify())
+    .pipe gulpif(argv.compress, rev())
     .pipe gulp.dest "#{folder}/scripts"
 
 gulp.task 'scripts', ->
   gulp.src paths.scripts
+    .pipe cache('scripts')
     .pipe preprocess context: NODE_ENV: env
     .pipe do classify
     .pipe coffee bare: false
     .pipe gulpif(argv.compress, uglify())
     .pipe gulpif(argv.compress, concat('app.js'))
+    .pipe gulpif(argv.compress, rev())
     .pipe gulp.dest "#{folder}/scripts"
 
 gulp.task 'styles', ->
-  gulp.src paths.base_style
+  gulp.src paths.styles
     .pipe sass()
+    .pipe gulpif(argv.compress, rev())
     .pipe gulp.dest "#{folder}/styles"
 
 gulp.task 'styles:reload', ->
-  gulp.src paths.base_style
+  gulp.src paths.styles
     .pipe sass()
     .pipe gulp.dest "#{folder}/styles"
     .pipe connect.reload()
 
 gulp.task 'images', ->
   gulp.src paths.images
+    .pipe cache('images')
     .pipe gulpif(argv.compress, imagemin())
     .pipe gulp.dest "#{folder}/images"
 
 gulp.task 'fonts', ->
   gulp.src paths.fonts
+    .pipe cache('fonts')
     .pipe gulp.dest "#{folder}/fonts"
-
-gulp.task 'swf', ->
-  gulp.src paths.swf
-    .pipe gulp.dest "#{folder}/swf"
 
 gulp.task 'partials', ->
   gulp.src paths.partials
     .pipe templateCache('templates', {standalone:true, root: '/partials/'} )
     .pipe rename(extname: '.js')
     .pipe gulpif(argv.compress, uglify())
+    .pipe gulpif(argv.compress, rev())
     .pipe gulp.dest "#{folder}/scripts"
 
 gulp.task 'index', ->
   if(argv.compress)
     scripts = [
-      "./#{folder}/scripts/dependencies.js"
-      "./#{folder}/scripts/templates.js"
-      "./#{folder}/scripts/app.js"
+      "./#{folder}/scripts/dependencies-*.js"
+      "./#{folder}/scripts/templates-*.js"
+      "./#{folder}/scripts/app-*.js"
     ]
   else
     scripts = "./#{folder}/scripts/**/*.js"
@@ -108,7 +108,7 @@ gulp.task 'index', ->
     ), ignorePath: "/#{folder}", addRootSlash: false)
     .pipe gulp.dest "#{folder}/"
 
-gulp.task 'server', ['compile', 'watch'], ->
+gulp.task 'server', ->
   connect.server
     port       : 1337
     root       : "#{folder}"
@@ -116,6 +116,16 @@ gulp.task 'server', ['compile', 'watch'], ->
     fallback   : "#{folder}/index.html"
 
   open 'http://localhost:1337'
+
+gulp.task 'up', (cb) ->
+  runSequence(
+    'clean', 
+    'concat_bower', 
+    'compile', 
+    'watch', 
+    'server' 
+    cb
+  );
 
 gulp.task 'reload', ->
   gulp.src paths.index
@@ -129,16 +139,13 @@ gulp.task 'watch', ->
   gulp.watch paths.images   , ['compile']
   gulp.watch paths.index    , ['compile']
 
-gulp.task 'compile', ['clean'], (cb) ->
+gulp.task 'compile', (cb) ->
   runSequence(
-    'move_bower', 
-    'concat_bower', 
     [
       'scripts', 
       'styles', 
       'images', 
-      'fonts',
-      'swf'
+      'fonts'
     ], 
     'partials',
     'index', 
@@ -146,4 +153,12 @@ gulp.task 'compile', ['clean'], (cb) ->
     cb
   );
 
-gulp.task 'default' , ['server']
+gulp.task 'build', (cb) ->
+  runSequence(
+    'clean',
+    'concat_bower', 
+    'compile', 
+    cb
+  );
+
+gulp.task 'default' , ['up']
